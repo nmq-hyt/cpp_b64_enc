@@ -1,3 +1,4 @@
+#include "encode.hpp"
 #include <iostream>
 #include <string>
 #include <bitset>
@@ -9,17 +10,7 @@ using std::bitset;
 using std::cout;
 using std::endl;
 using std::map;
-string base64_encode (string text);
-string encode_bstring (string text);
 
-int main (int argc, char* argv[]) {
-
-  // convert the cmdline argument into a string
-  string text = argv[1];
-  cout << base64_encode(text) << endl;
-
-  return EXIT_SUCCESS;
-}
 
 string base64_encode (string text){
   // we need the length of the text
@@ -72,7 +63,10 @@ string base64_encode (string text){
         intermediate = encode_bstring(b1.to_string() + b2.to_string() + b3.to_string());
         result.append(intermediate);
       }
-      intermediate = text[n];
+      // there was a fencepost error here
+      // it's gone now
+      intermediate = text[n-1];
+      cout << text[n-1] << endl;
       // recurse to handle special case n = 1;
       result.append(base64_encode(intermediate));
       break;
@@ -87,8 +81,10 @@ string base64_encode (string text){
           intermediate = encode_bstring(b1.to_string() + b2.to_string() + b3.to_string());
           result.append(intermediate);
         }
-        intermediate = text[n-1] + text[n];
-        // recursed to hande special case n == 2;
+        intermediate = "";
+        intermediate.append(1,text[n-2]);
+        intermediate.append(1,text[n-1]);
+        // recurse to hande special case n == 2;
         result.append(base64_encode(intermediate));
 
 
@@ -224,3 +220,7 @@ string encode_bstring (string text) {
 
   return text;
 }
+
+
+
+
