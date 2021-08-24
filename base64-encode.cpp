@@ -66,7 +66,6 @@ string base64_encode (string text){
       // there was a fencepost error here
       // it's gone now
       intermediate = text[n-1];
-      cout << text[n-1] << endl;
       // recurse to handle special case n = 1;
       result.append(base64_encode(intermediate));
       break;
