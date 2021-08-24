@@ -86,7 +86,7 @@ string base64_decode (string text){
                                    {"9","111101"},
                                    {"+","111110"},
                                    {"/","111111"},
-                                   {"=",""}
+                                   {"=","="}
   };
 
   for (int i = 0; i < n; i+=4){
@@ -187,25 +187,39 @@ string decode_bstring (string text){
                                     {"00111111","?"},
                                     {"00100010","\""},
                                     {"00100111","\'"},
-                                    {"00111101",""}
+                                    {"00111101",""},
+                                    {"=",""}
   };
+
+
   
-  temp1 = text.substr(0,8);
-  temp2 = text.substr(8,8);
-  temp3 = text.substr(16,8);
+  bool twopad_truth = (text.substr(n-2,2)  == "==" ) ? true : false;
+  bool onepad_truth = (text.substr(n-1,1) == "=") ? true: false;
 
 
-  // dealing with padding
-  // either the last character in a 3-char string is padded
-  // or the second its, or there's no padding
-  // we replace the padding as the empty string
+  if (twopad_truth) {
+    temp1 = text.substr(0,8);
+    temp1 = normal_table[temp1];
+    text = temp1;
+  } else if (onepad_truth) {
+    temp1 = text.substr(0,8);
+    temp2 = text.substr(8,8);
 
+    temp1 = normal_table[temp1];
+    temp2 = normal_table[temp2];
 
-  temp1 = normal_table[temp1];
-  temp2 = normal_table[temp2];
-  temp3 = normal_table[temp3];
+    text = temp1 + temp2;
 
-  text = temp1 + temp2 + temp3;
+  } else {
+    temp1 = text.substr(0,8);
+    temp2 = text.substr(8,8);
+    temp3 = text.substr(16,8);
 
+    temp1 = normal_table[temp1];
+    temp2 = normal_table[temp2];
+    temp3 = normal_table[temp3];
+
+    text = temp1 + temp2 + temp3;
+  }
   return text;
 }
