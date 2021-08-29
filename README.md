@@ -7,7 +7,7 @@ After fixing a few small fencepost errors and memory bound issues, the program w
 # How does it work?
 This program is an almost word-for-word copy of the method recommended for base64 encoding found in (https://datatracker.ietf.org/doc/html/rfc4648), RFC4648. It seemed as good as of any method.
 
-The program accepts alphanumerical input and splits it into three byte chunks at a time, which are concatenated and then split into 6-bit segments, which are then changed into their base 64 equivalent using cpp's map feature.
+The program accepts alphanumerical input and splits it into three one-byte chunks at a time, which are turned into their binary string representations, concatenated, which are then changed into their base 64 equivalent using cpp's map  feature.
 
 The decoding takes alphanumerical input, and turns four characters at a time into their 6 bit representation (the inverse of the function which maps characters to 6-bit binary strings), concatenting those and converting them into three byte chunks which are then converted from binary to ascii text.
 
